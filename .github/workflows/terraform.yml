@@ -10,18 +10,13 @@ permissions:
 jobs:
   terraform:
     name: 'Terraform'
-    env:
-      ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.TENANT_ID }}
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     environment: production
 
     # Use the powershell to apply the commands
     defaults:
       run:
-        shell: powershell
+        shell: bash
 
     steps:
     # Checkout the repository to the GitHub Actions runner
@@ -35,8 +30,12 @@ jobs:
           export ARM_CLIENT_SECRET=$ARM_CLIENT_SECRET
           export ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID
           export ARM_TENANT_ID=$ARM_TENANT_ID
- 
           terraform init
+      env:
+          ARM_CLIENT_ID: ${{secrets.ARM_CLIENT_ID}}
+          ARM_CLIENT_SECRET: ${{secrets.ARM_CLIENT_SECRET}}
+          ARM_SUBSCRIPTION_ID: ${{secrets.ARM_SUBSCRIPTION_ID}}
+          ARM_TENANT_ID: ${{secrets.ARM_TENANT_ID}}
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
